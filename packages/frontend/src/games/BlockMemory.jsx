@@ -11,24 +11,25 @@ export default function BlockMemory() {
   const [cards, setCards] = useState([]);
   const [flippedIndices, setFlippedIndices] = useState([]);
   const [matchedIndices, setMatchedIndices] = useState(new Set());
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(20);
   const [level, setLevel] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const startGame = () => {
     setScore(0);
     setLevel(1);
-    setTimeLeft(60);
+    setTimeLeft(20);
     setGameOver(false);
     setIsPlaying(true);
     generateBoard(1);
   };
 
   const generateBoard = (currentLevel) => {
-    // Increase pairs based on level, start with 6 pairs, max out at 10 pairs (20 cards)
-    const pairsCount = Math.min(5 + currentLevel, 10);
-    const selectedIcons = ICONS.slice(0, pairsCount);
-    const deck = [...selectedIcons, ...selectedIcons]
+    // Triplets instead of pairs. Start with 4 triplets (12 cards) up to 8 (24 cards)
+    const tripletsCount = Math.min(3 + currentLevel, 8);
+    const selectedIcons = ICONS.slice(0, tripletsCount);
+    // Create triplets
+    const deck = [...selectedIcons, ...selectedIcons, ...selectedIcons]
       .sort(() => Math.random() - 0.5)
       .map((icon, index) => ({ id: index, icon }));
       
@@ -64,7 +65,7 @@ export default function BlockMemory() {
           setGameOver(true);
           setIsPlaying(false);
         } else {
-          setTimeLeft(prev => prev + 5); // Add only 5 seconds for clearing board so they don't play forever
+          setTimeLeft(prev => prev + 5); // Add only 5 seconds for clearing board
           setLevel(l => l + 1);
           generateBoard(level + 1);
           setIsProcessing(false);
@@ -79,20 +80,20 @@ export default function BlockMemory() {
     const newFlipped = [...flippedIndices, index];
     setFlippedIndices(newFlipped);
 
-    if (newFlipped.length === 2) {
+    if (newFlipped.length === 3) {
       setIsProcessing(true);
-      const [first, second] = newFlipped;
-      if (cards[first].icon === cards[second].icon) {
-        // Match found
-        setMatchedIndices(prev => new Set(prev).add(first).add(second));
-        setScore(s => s + 10);
+      const [first, second, third] = newFlipped;
+      if (cards[first].icon === cards[second].icon && cards[second].icon === cards[third].icon) {
+        // Match found for 3 cards
+        setMatchedIndices(prev => new Set(prev).add(first).add(second).add(third));
+        setScore(s => s + 30); // Higher score for 3 cards
         setIsProcessing(false);
       } else {
         // No match
         setTimeout(() => {
           setFlippedIndices([]);
           setIsProcessing(false);
-        }, 800); // slightly faster flip back
+        }, 800);
       }
     }
   };
