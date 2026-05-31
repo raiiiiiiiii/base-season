@@ -25,8 +25,8 @@ export default function BlockMemory() {
   };
 
   const generateBoard = (currentLevel) => {
-    // Increase pairs based on level, max out at 10 pairs (20 cards)
-    const pairsCount = Math.min(3 + currentLevel, 10);
+    // Increase pairs based on level, start with 6 pairs, max out at 10 pairs (20 cards)
+    const pairsCount = Math.min(5 + currentLevel, 10);
     const selectedIcons = ICONS.slice(0, pairsCount);
     const deck = [...selectedIcons, ...selectedIcons]
       .sort(() => Math.random() - 0.5)
@@ -51,6 +51,28 @@ export default function BlockMemory() {
     return () => clearInterval(timer);
   }, [isPlaying, gameOver, timeLeft]);
 
+  // Level Complete Logic
+  useEffect(() => {
+    if (isPlaying && cards.length > 0 && matchedIndices.size === cards.length) {
+      setIsProcessing(true);
+      setTimeout(() => {
+        setScore(s => s + (level * 100) + (timeLeft * 10)); // Bonus for time left
+        
+        if (level >= 5) {
+          // Player beat all 5 levels! End game early with huge bonus
+          setScore(s => s + 1000); 
+          setGameOver(true);
+          setIsPlaying(false);
+        } else {
+          setTimeLeft(prev => prev + 5); // Add only 5 seconds for clearing board so they don't play forever
+          setLevel(l => l + 1);
+          generateBoard(level + 1);
+          setIsProcessing(false);
+        }
+      }, 1000);
+    }
+  }, [matchedIndices.size, cards.length, isPlaying]);
+
   const handleCardClick = (index) => {
     if (isProcessing || flippedIndices.includes(index) || matchedIndices.has(index) || gameOver || !isPlaying) return;
 
@@ -62,32 +84,15 @@ export default function BlockMemory() {
       const [first, second] = newFlipped;
       if (cards[first].icon === cards[second].icon) {
         // Match found
-        setMatchedIndices(prev => {
-          const newSet = new Set(prev);
-          newSet.add(first);
-          newSet.add(second);
-          
-          // Check if board complete
-          if (newSet.size === cards.length) {
-            setTimeout(() => {
-              setScore(s => s + (level * 100) + (timeLeft * 10)); // Bonus for time left
-              setTimeLeft(prev => prev + 15); // Add time for clearing board
-              setLevel(l => l + 1);
-              generateBoard(level + 1);
-              setIsProcessing(false);
-            }, 1000);
-          } else {
-            setIsProcessing(false);
-          }
-          return newSet;
-        });
+        setMatchedIndices(prev => new Set(prev).add(first).add(second));
         setScore(s => s + 10);
+        setIsProcessing(false);
       } else {
         // No match
         setTimeout(() => {
           setFlippedIndices([]);
           setIsProcessing(false);
-        }, 1000);
+        }, 800); // slightly faster flip back
       }
     }
   };
