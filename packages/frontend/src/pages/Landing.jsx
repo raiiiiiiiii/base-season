@@ -5,6 +5,8 @@ import './Landing.css';
 
 const CONTRACT_ADDRESS = "0x6Df4F452e77aF1879061F4F3728D5607B5082ce7";
 
+import baseLogo from '../assets/base-logo.svg';
+
 export default function Landing() {
   const { data: currentSeason } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -41,7 +43,10 @@ export default function Landing() {
         </div>
         <div className="glass-panel stat-card float-3">
           <h3>Network</h3>
-          <p style={{ color: '#0052FF' }}>Base Mainnet</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <img src={baseLogo} alt="Base" style={{ width: '20px', height: '20px' }} />
+            <p style={{ color: '#0052FF', margin: 0 }}>Base Mainnet</p>
+          </div>
         </div>
       </div>
     </div>
