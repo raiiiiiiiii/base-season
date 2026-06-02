@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useReadContract } from 'wagmi';
 import abi from '../abi.json';
+import baseLogo from '../assets/base-logo.svg';
 
 const CONTRACT_ADDRESS = "0x6Df4F452e77aF1879061F4F3728D5607B5082ce7";
 
@@ -58,7 +59,10 @@ export default function Leaderboard() {
   return (
     <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '16px', letterSpacing: '-0.03em' }}>Hall of <span className="text-gradient">Fame</span></h2>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', marginBottom: '16px' }}>
+          <img src={baseLogo} alt="Base" style={{ width: '48px', height: '48px' }} />
+          <h2 className="hero-title" style={{ fontSize: '3.5rem', margin: 0, letterSpacing: '-0.03em' }}>Hall of <span className="text-gradient">Fame</span></h2>
+        </div>
         <p className="text-secondary" style={{ fontSize: '1.15rem' }}>Top players competing for glory in Season {seasonId}</p>
       </div>
       

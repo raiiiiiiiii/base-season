@@ -3,6 +3,7 @@ import { useAccount, useReadContract, useReadContracts } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import html2canvas from 'html2canvas';
 import abi from '../abi.json';
+import baseLogo from '../assets/base-logo.svg';
 
 const CONTRACT_ADDRESS = "0x6Df4F452e77aF1879061F4F3728D5607B5082ce7";
 
@@ -91,7 +92,10 @@ export default function Profile() {
           <div className="glass-panel" style={{ padding: '30px', textAlign: 'center', gridColumn: '1 / -1', background: 'rgba(255,255,255,0.02)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
               <div style={{ textAlign: 'left' }}>
-                <div style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Wallet Address</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  <img src={baseLogo} alt="Base" style={{ width: '16px', height: '16px' }} />
+                  Wallet Address
+                </div>
                 <div className="mono" style={{ fontSize: '1.2rem', color: 'var(--text-1)' }}>{address}</div>
               </div>
               <div style={{ textAlign: 'right' }}>
