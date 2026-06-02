@@ -82,24 +82,7 @@ export default function Landing() {
             </Link>
           </div>
 
-          <div className="hero-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', marginTop: '32px' }}>
-            <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px' }}>
-              <div style={{ color: 'var(--text-3)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Players</div>
-              <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--text-1)' }}>{totalPlayers}</div>
-            </div>
-            <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px' }}>
-              <div style={{ color: 'var(--text-3)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Highest Score</div>
-              <div className="text-gradient-gold" style={{ fontSize: '1.8rem', fontWeight: 'bold' }}>{highestScore}</div>
-            </div>
-            <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px' }}>
-              <div style={{ color: 'var(--text-3)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Games Played</div>
-              <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--text-1)' }}>{gamesPlayed}</div>
-            </div>
-            <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid rgba(0, 194, 255, 0.2)' }}>
-              <div style={{ color: 'var(--text-3)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Season {seasonId} Ends In</div>
-              <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--cyan)', marginTop: '8px' }}>{timeLeft || 'Calculating...'}</div>
-            </div>
-          </div>
+
         </div>
 
         {/* ─── Right: Visual ─── */}
@@ -110,10 +93,7 @@ export default function Landing() {
           {/* Center orb */}
           <div className="hero-orb-inner">🏆</div>
           
-          <div className="glass-panel stat-card float-2" style={{ position: 'absolute', bottom: '10%', right: '0', zIndex: 2 }}>
-            <span className="stat-card-label" style={{ display: 'block', fontSize: '0.8rem', color: 'var(--text-3)', marginBottom: '4px' }}>Season Rewards</span>
-            <span className="stat-card-value text-gradient" style={{ display: 'block', fontWeight: 'bold' }}>Champion Badge & Glory</span>
-          </div>
+
         </div>
       </div>
       
