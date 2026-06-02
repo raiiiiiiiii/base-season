@@ -41,16 +41,18 @@ export default function BlockMemory() {
   // Timer
   useEffect(() => {
     let timer;
-    if (isPlaying && !gameOver && timeLeft > 0) {
+    const isLevelComplete = cards.length > 0 && matchedIndices.size === cards.length;
+    
+    if (isPlaying && !gameOver && timeLeft > 0 && !isLevelComplete) {
       timer = setInterval(() => {
         setTimeLeft(prev => prev - 1);
       }, 1000);
-    } else if (timeLeft === 0 && isPlaying) {
+    } else if (timeLeft === 0 && isPlaying && !isLevelComplete) {
       setGameOver(true);
       setIsPlaying(false);
     }
     return () => clearInterval(timer);
-  }, [isPlaying, gameOver, timeLeft]);
+  }, [isPlaying, gameOver, timeLeft, matchedIndices.size, cards.length]);
 
   // Level Complete Logic
   useEffect(() => {
