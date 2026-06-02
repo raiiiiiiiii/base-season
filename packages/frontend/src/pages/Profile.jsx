@@ -65,10 +65,10 @@ export default function Profile() {
     : "N/A";
 
   return (
-    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-        <h2>Player <span className="text-gradient">Profile</span></h2>
-        <p className="text-secondary">Your onchain legacy</p>
+    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '16px', letterSpacing: '-0.03em' }}>Player <span className="text-gradient">Profile</span></h2>
+        <p className="text-secondary" style={{ fontSize: '1.15rem' }}>Your onchain legacy</p>
       </div>
       
       {!isConnected ? (
@@ -102,23 +102,23 @@ export default function Profile() {
           </div>
 
           <div className="glass-panel" style={{ padding: '30px', textAlign: 'center' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>Current Rank</h3>
-            <p className="text-gradient-gold" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{currentRank}</p>
+            <h3 style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', marginBottom: '12px' }}>Current Rank</h3>
+            <p className="text-gradient-gold" style={{ fontSize: '2.5rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>{currentRank}</p>
           </div>
           
           <div className="glass-panel" style={{ padding: '30px', textAlign: 'center' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>Highest Score</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{Number(stats.bestScore)}</p>
+            <h3 style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', marginBottom: '12px' }}>Highest Score</h3>
+            <p style={{ fontSize: '2.5rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>{Number(stats.bestScore)}</p>
           </div>
 
           <div className="glass-panel" style={{ padding: '30px', textAlign: 'center' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>Games Played</h3>
-            <p style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{Number(stats.gamesPlayed)}</p>
+            <h3 style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', marginBottom: '12px' }}>Games Played</h3>
+            <p style={{ fontSize: '2.5rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>{Number(stats.gamesPlayed)}</p>
           </div>
 
           <div className="glass-panel" style={{ padding: '30px', textAlign: 'center' }}>
-            <h3 style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '10px' }}>Total Points</h3>
-            <p className="text-gradient" style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>{Number(stats.totalScore)}</p>
+            <h3 style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', marginBottom: '12px' }}>Total Points</h3>
+            <p className="text-gradient" style={{ fontSize: '2.5rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>{Number(stats.totalScore)}</p>
           </div>
           
           {/* Share Card functionality removed in favor of the specialized ScoreSubmit card, or kept here as an ID */}

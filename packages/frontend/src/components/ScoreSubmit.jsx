@@ -157,92 +157,25 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
         </h3>
         
         {/* Visual Share Card */}
-        <div className="share-card" style={{ 
-          background: '#0f0f13', 
-          borderRadius: '16px', 
-          padding: '24px', 
-          marginBottom: '32px', 
-          position: 'relative', 
-          overflow: 'hidden',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-          fontFamily: "'JetBrains Mono', monospace",
-          color: '#e5e7eb',
-          textAlign: 'left'
-        }}>
-          {/* Top Gold Edge */}
-          <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '2px', background: 'linear-gradient(90deg, transparent, #eab308, transparent)' }}></div>
+        <div className="share-card" style={{ background: 'rgba(13, 14, 28, 0.8)', borderRadius: 'var(--radius-lg)', padding: '28px', marginBottom: '32px', border: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)' }}>
+          <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '120px', height: '120px', background: 'var(--primary)', filter: 'blur(60px)', opacity: 0.4 }}></div>
+          <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '120px', height: '120px', background: 'var(--cyan)', filter: 'blur(60px)', opacity: 0.4 }}></div>
           
-          {/* Subtle Watermark */}
-          <div style={{ position: 'absolute', right: '-5%', top: '5%', fontSize: '200px', color: 'rgba(255,255,255,0.02)', fontFamily: 'serif', pointerEvents: 'none', lineHeight: 1 }}>
-            B
-          </div>
-          
-          {/* Top Row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ background: '#d1d5db', color: '#111', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontFamily: 'serif', fontSize: '14px' }}>
-                B<sup style={{fontSize:'8px'}}>s</sup>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <span className="badge badge-cyan" style={{ marginBottom: '12px', display: 'inline-flex' }}>Season {seasonId}</span>
+            <div style={{ fontSize: '1rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700' }}>{getGameName()}</div>
+            <div className="text-gradient" style={{ fontSize: '4.5rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1.1', margin: '16px 0', textShadow: '0 0 40px var(--cyan-glow)' }}>{score}</div>
+            {isConnected && (
+              <div style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-2)', background: 'rgba(255,255,255,0.04)', padding: '6px 12px', borderRadius: '8px', display: 'inline-block', border: '1px solid rgba(255,255,255,0.05)' }}>
+                Player: {shortenAddress(address)}
               </div>
-              <div style={{ fontSize: '10px', letterSpacing: '0.15em', color: '#6b7280' }}>
-                AUTH ID EX-{isConnected && address ? address.substring(2, 6).toUpperCase() : 'H517'}
-              </div>
-            </div>
-            <div style={{ border: '1px solid rgba(234, 179, 8, 0.3)', color: '#eab308', padding: '4px 12px', fontSize: '10px', letterSpacing: '0.1em', borderRadius: '99px' }}>
-              ONCHAIN RECORD
-            </div>
-          </div>
-
-          {/* Middle Content */}
-          <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginTop: '36px', marginBottom: '40px', position: 'relative', zIndex: 1 }}>
-            {/* Avatar */}
-            <div style={{ width: '76px', height: '76px', borderRadius: '50%', border: '2px solid #eab308', overflow: 'hidden', flexShrink: 0, background: '#1f2937' }}>
-              <img src={`https://api.dicebear.com/7.x/lorelei/svg?seed=${isConnected && address ? address : 'base'}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            
-            {/* Details */}
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: '32px', color: '#fff', fontWeight: '600', fontFamily: 'sans-serif', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '8px' }}>
-                {score} PTS
-              </div>
-              <div style={{ color: '#eab308', fontSize: '11px', letterSpacing: '0.15em', marginBottom: '16px', fontWeight: '500' }}>
-                SEASON {seasonId} OPERATOR
-              </div>
-              
-              <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', marginBottom: '12px' }}></div>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '16px', rowGap: '6px', fontSize: '10px', letterSpacing: '0.1em' }}>
-                <div style={{ color: '#6b7280' }}>SYS·ID</div>
-                <div style={{ color: '#d1d5db' }}>{getGameName().toUpperCase().replace(' ', '-')}-S{seasonId}</div>
-                
-                <div style={{ color: '#6b7280' }}>ISSUED</div>
-                <div style={{ color: '#d1d5db' }}>{new Date().toISOString().split('T')[0].replace(/-/g, '.')}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
-            <div style={{ fontSize: '10px', letterSpacing: '0.15em', color: '#6b7280' }}>
-              UID // {isConnected && address ? address.substring(0, 16).toUpperCase() : 'UNKNOWN'}
-            </div>
-            {/* Decorative Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 10px)', gap: '4px', opacity: 0.3 }}>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #9ca3af', borderRadius: '2px' }}></div>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #9ca3af', borderRadius: '2px' }}></div>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #9ca3af', borderRadius: '2px' }}></div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 4px)', gap: '2px' }}>
-                 <div style={{ width: '4px', height: '4px', background: '#9ca3af', borderRadius: '1px' }}></div>
-                 <div style={{ width: '4px', height: '4px', background: '#9ca3af', borderRadius: '1px' }}></div>
-                 <div style={{ width: '4px', height: '4px', background: '#9ca3af', borderRadius: '1px' }}></div>
-                 <div style={{ width: '4px', height: '4px', background: '#9ca3af', borderRadius: '1px' }}></div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
         
         {!isConnected ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
-            <p style={{ color: 'var(--text-secondary)' }}>Connect wallet to securely record your score. Scores secured on Base.</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Connect wallet to submit your score securely onchain</p>
             <ConnectButton />
             <button className="btn-secondary" onClick={onRestart} style={{ width: '100%' }}>Play Again</button>
           </div>
@@ -272,7 +205,7 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
                     onClick={handleSubmit} 
                     disabled={isSigning || isTxPending || isConfirming}
                   >
-                    {isSigning ? 'Sign in Wallet...' : isTxPending ? 'Confirming Tx...' : isConfirming ? 'Securing Score on Base...' : 'Sign & Submit Score'}
+                    {isSigning ? 'Sign in Wallet...' : isTxPending ? 'Confirming Tx...' : isConfirming ? 'Minting Score on Base...' : 'Sign & Submit Score'}
                   </button>
                 )}
                 <button className="btn-secondary" onClick={onRestart} disabled={isSigning || isTxPending || isConfirming}>

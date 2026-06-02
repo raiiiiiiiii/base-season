@@ -2,121 +2,122 @@
    PRECISION TAP — Premium Game Styles
 ═══════════════════════════════════════════ */
 
+/* ─── Game Area ─── */
 .pt-game-area {
   width: 100%;
   max-width: 600px;
-  height: 440px;
+  height: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  cursor: crosshair;
+  cursor: pointer;
   user-select: none;
-  background: radial-gradient(circle at 50% 50%, rgba(20, 22, 40, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(13, 14, 28, 0.4), transparent);
   border-radius: var(--radius-xl);
-  border: 1px dashed rgba(255, 255, 255, 0.08);
-  margin: 0 auto;
 }
 
-.pt-game-area:active {
-  cursor: crosshair;
-}
-
-/* ─── Score Display ─── */
+/* ─── HUD ─── */
 .pt-score {
   position: absolute;
-  top: 32px;
-  font-size: 1.8rem;
+  top: 24px;
+  font-size: 2rem;
   font-weight: 800;
   font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(255,255,255,0.2);
 }
 
-/* ─── Feedback Text (Hit / Miss) ─── */
 .pt-feedback {
   position: absolute;
-  top: 96px;
+  top: 90px;
   font-size: 2.5rem;
   font-weight: 900;
   font-family: 'Space Grotesk', sans-serif;
-  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  animation: ptPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
 .pt-feedback.hit {
   color: var(--cyan);
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.2);
+  text-shadow: 0 0 24px var(--cyan-glow), 0 0 12px var(--cyan-glow);
 }
 
 .pt-feedback.miss {
   color: var(--red);
-  text-shadow: 0 0 20px rgba(244, 63, 94, 0.6), 0 0 40px rgba(244, 63, 94, 0.2);
+  text-shadow: 0 0 24px var(--red-glow), 0 0 12px var(--red-glow);
 }
 
-/* ─── Main Bar Container ─── */
+/* ─── Bar Container ─── */
 .pt-bar-container {
-  width: 85%;
+  width: 80%;
   height: 56px;
-  background: rgba(8, 9, 18, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 7, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 99px;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(139, 92, 246, 0.08);
+  box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(6, 182, 212, 0.05);
   backdrop-filter: blur(12px);
-}
-
-/* Inner tick marks to look like a meter */
-.pt-bar-container::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(90deg, transparent 95%, rgba(255, 255, 255, 0.03) 95%);
-  background-size: 20px 100%;
-  pointer-events: none;
 }
 
 /* ─── Target Zone ─── */
 .pt-target {
   position: absolute;
   height: 100%;
-  background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.35), rgba(6, 182, 212, 0.15));
+  background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.5), rgba(6, 182, 212, 0.15));
   border-left: 2px solid var(--cyan);
   border-right: 2px solid var(--cyan);
-  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.5), 0 0 15px rgba(6, 182, 212, 0.3);
-  animation: targetPulse 2.5s ease-in-out infinite alternate;
-  border-radius: 4px;
+  box-shadow: inset 0 0 24px var(--cyan-glow), 0 0 16px var(--cyan-glow);
+  animation: ptTargetPulse 2s ease-in-out infinite alternate;
 }
 
-@keyframes targetPulse {
-  from { box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.1); }
-  to   { box-shadow: inset 0 0 35px rgba(6, 182, 212, 0.7), 0 0 25px rgba(6, 182, 212, 0.5); }
+@keyframes ptTargetPulse {
+  from {
+    box-shadow: inset 0 0 16px rgba(6, 182, 212, 0.3), 0 0 12px rgba(6, 182, 212, 0.2);
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.4), rgba(6, 182, 212, 0.1));
+  }
+  to {
+    box-shadow: inset 0 0 32px rgba(6, 182, 212, 0.8), 0 0 24px rgba(6, 182, 212, 0.6);
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.6), rgba(6, 182, 212, 0.2));
+  }
 }
 
-/* ─── Moving Indicator Line ─── */
+/* ─── Moving Line Indicator ─── */
 .pt-line {
   position: absolute;
   height: 160%;
   top: -30%;
   width: 6px;
-  background: #FFF;
+  background: #fff;
   border-radius: 99px;
   transform: translateX(-50%);
-  box-shadow: 0 0 15px #FFF, 0 0 30px var(--violet);
+  box-shadow: 0 0 20px #fff, 0 0 40px var(--violet);
   z-index: 2;
-  transition: transform 0.05s linear; /* smooth out rendering if needed */
 }
 
-/* Comet tail effect */
+/* Trailing motion blur effect */
 .pt-line::after {
   content: '';
   position: absolute;
   top: 15%;
   height: 70%;
   width: 150px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15));
   transform: translateX(-100%);
-  filter: blur(6px);
+  filter: blur(8px);
   pointer-events: none;
+}
+
+/* When moving right to left, flip the trail */
+.pt-line.moving-left::after {
+  transform: translateX(6px); /* width of line */
+  background: linear-gradient(270deg, transparent, rgba(255,255,255,0.15));
+}
+
+@keyframes ptPopIn {
+  0% { opacity: 0; transform: scale(0.5) translateY(20px); filter: blur(10px); }
+  60% { transform: scale(1.1) translateY(-5px); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
 }

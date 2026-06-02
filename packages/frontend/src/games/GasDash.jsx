@@ -26,13 +26,12 @@ export default function GasDash() {
     let animationFrameId;
     let currentScore = 0;
     
-    // Player state
     const player = {
       lane: 1, // 0: left, 1: center, 2: right
       y: canvas.height - 100,
       width: 40,
       height: 60,
-      color: '#00C2FF'
+      color: '#06B6D4' // var(--cyan)
     };
     
     const lanes = [
@@ -53,7 +52,6 @@ export default function GasDash() {
       // Increase speed slightly
       if (frameCount % 600 === 0) gameSpeed += 0.5;
       
-      // Spawn obstacle
       if (frameCount % Math.max(30, Math.floor(100 - gameSpeed * 2)) === 0) {
         const lane = Math.floor(Math.random() * 3);
         obstacles.push({
@@ -61,18 +59,17 @@ export default function GasDash() {
           y: -50,
           width: 50,
           height: 50,
-          color: '#ff3366'
+          color: '#F43F5E' // var(--red)
         });
       }
       
-      // Spawn energy
       if (frameCount % 80 === 0 && Math.random() > 0.3) {
         const lane = Math.floor(Math.random() * 3);
         energies.push({
           lane,
           y: -30,
           radius: 15,
-          color: '#0052FF'
+          color: '#8B5CF6' // var(--violet)
         });
       }
     };
@@ -135,25 +132,38 @@ export default function GasDash() {
       
       // Draw Player
       ctx.fillStyle = player.color;
-      ctx.shadowColor = player.color;
-      ctx.shadowBlur = 10;
+      ctx.shadowColor = 'rgba(6, 182, 212, 0.8)';
+      ctx.shadowBlur = 20;
+      // Add neon core effect
       ctx.fillRect(lanes[player.lane] - player.width / 2, player.y, player.width, player.height);
-      ctx.shadowBlur = 0; // reset
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 0;
+      ctx.fillRect(lanes[player.lane] - player.width / 4, player.y + 10, player.width / 2, player.height - 20);
       
       // Draw obstacles
-      ctx.fillStyle = '#ff3366';
+      ctx.fillStyle = '#F43F5E';
+      ctx.shadowColor = 'rgba(244, 63, 94, 0.8)';
+      ctx.shadowBlur = 20;
       obstacles.forEach(obs => {
         ctx.fillRect(lanes[obs.lane] - obs.width / 2, obs.y, obs.width, obs.height);
       });
       
       // Draw energies
-      ctx.fillStyle = '#0052FF';
-      ctx.shadowColor = '#0052FF';
-      ctx.shadowBlur = 15;
+      ctx.fillStyle = '#8B5CF6';
+      ctx.shadowColor = 'rgba(139, 92, 246, 0.8)';
+      ctx.shadowBlur = 25;
       energies.forEach(en => {
         ctx.beginPath();
         ctx.arc(lanes[en.lane], en.y, en.radius, 0, Math.PI * 2);
         ctx.fill();
+        // Inner white core
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.arc(lanes[en.lane], en.y, en.radius / 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#8B5CF6';
+        ctx.shadowBlur = 25;
       });
       ctx.shadowBlur = 0;
       
@@ -201,46 +211,39 @@ export default function GasDash() {
   }, [isPlaying]);
 
   return (
-    <div className="container animate-fade-in page-wrapper" style={{ paddingBottom: '80px' }}>
+    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
       <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '12px' }}>Gas <span className="text-gradient">Dash</span></h2>
-        <p className="text-secondary" style={{ fontSize: '1.1rem' }}>Use Left/Right arrows to dodge and collect energy</p>
+        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '16px', letterSpacing: '-0.03em' }}>Gas <span className="text-gradient">Dash</span></h2>
+        <p className="text-secondary" style={{ fontSize: '1.15rem' }}>Use Left/Right arrows to dodge and collect energy</p>
       </div>
       
       <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
         {!isPlaying && !gameOver && (
-          <div className="glass-panel animate-fade-up" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '48px', textAlign: 'center', borderRadius: 'var(--radius-lg)' }}>
-            <h3 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Ready to run?</h3>
-            <p className="text-secondary" style={{ marginBottom: '24px' }}>Dodge the red obstacles, grab the blue orbs!</p>
-            <button className="btn-primary glow-hover" onClick={startGame}>Start Game</button>
+          <div className="glass-panel" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '48px', textAlign: 'center', boxShadow: 'var(--shadow-lg)' }}>
+            <h3 style={{ fontSize: '2rem', marginBottom: '8px' }}>Ready to run?</h3>
+            <p className="text-secondary" style={{ marginBottom: '24px' }}>Survive as long as you can.</p>
+            <button className="btn-primary" onClick={startGame}>Start Game</button>
           </div>
         )}
         
         {gameOver && (
-          <div style={{ position: 'absolute', top: '20%', zIndex: 10, width: '100%' }}>
+          <div style={{ position: 'absolute', top: '10%', zIndex: 10, width: '100%' }}>
             <ScoreSubmit gameId={1} score={score} onRestart={startGame} />
           </div>
         )}
         
-        <div style={{ position: 'relative' }}>
-          {/* Subtle glow behind canvas */}
-          <div style={{ position: 'absolute', inset: -2, background: 'linear-gradient(180deg, var(--cyan), var(--violet))', filter: 'blur(12px)', opacity: 0.3, zIndex: -1, borderRadius: 'var(--radius-lg)' }} />
+        <div style={{ position: 'relative', opacity: gameOver ? 0.3 : 1, transition: 'opacity 0.4s ease' }}>
           <canvas 
             ref={canvasRef} 
             width={400} 
             height={600} 
-            style={{ 
-              background: 'var(--bg-darker)', 
-              borderRadius: 'var(--radius-lg)', 
-              display: 'block',
-              border: '1px solid var(--border)',
-              boxShadow: 'var(--shadow-md)'
-            }}
+            className="glass-panel"
+            style={{ background: 'var(--bg-darker)', borderRadius: 'var(--radius-xl)', display: 'block', boxShadow: 'var(--shadow-lg), inset 0 0 60px rgba(0,0,0,0.8)' }}
           />
           {isPlaying && !gameOver && (
-            <div className="glass-panel" style={{ position: 'absolute', top: '16px', left: '16px', padding: '12px 24px', borderRadius: 'var(--radius-md)', background: 'rgba(13, 14, 28, 0.7)' }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600', display: 'block', marginBottom: '4px' }}>Score</span>
-              <div ref={scoreRef} className="text-gradient" style={{ fontSize: '1.8rem', fontWeight: '800', fontFamily: 'Space Grotesk', lineHeight: 1 }}>0</div>
+            <div className="game-hud glass-panel" style={{ position: 'absolute', top: '20px', left: '20px', padding: '16px 24px', borderRadius: 'var(--radius-md)', background: 'rgba(13, 14, 28, 0.7)' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700' }}>Score</span>
+              <div ref={scoreRef} className="text-gradient" style={{ fontSize: '2rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>0</div>
             </div>
           )}
         </div>

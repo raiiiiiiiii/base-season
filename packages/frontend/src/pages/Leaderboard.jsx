@@ -42,44 +42,42 @@ export default function Leaderboard() {
   const shortenAddress = (addr) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
   const getRankStyle = (idx) => {
-    if (idx === 0) return { border: '1px solid var(--gold)', boxShadow: '0 0 24px rgba(245, 158, 11, 0.15)' };
-    if (idx === 1) return { border: '1px solid var(--silver)', boxShadow: '0 0 16px rgba(148, 163, 184, 0.1)' };
-    if (idx === 2) return { border: '1px solid var(--bronze)', boxShadow: '0 0 12px rgba(205, 127, 50, 0.1)' };
+    if (idx === 0) return { border: '1px solid #FFD700', boxShadow: '0 0 20px rgba(255, 215, 0, 0.2)' }; // Gold
+    if (idx === 1) return { border: '1px solid #C0C0C0', boxShadow: '0 0 15px rgba(192, 192, 192, 0.1)' }; // Silver
+    if (idx === 2) return { border: '1px solid #CD7F32', boxShadow: '0 0 10px rgba(205, 127, 50, 0.1)' }; // Bronze
     return {};
   };
 
   const getRankColor = (idx) => {
-    if (idx === 0) return 'var(--gold)';
-    if (idx === 1) return 'var(--silver)';
-    if (idx === 2) return 'var(--bronze)';
-    return 'var(--text-3)';
+    if (idx === 0) return '#FFD700';
+    if (idx === 1) return '#C0C0C0';
+    if (idx === 2) return '#CD7F32';
+    return 'var(--text-secondary)';
   };
 
   return (
-    <div className="container animate-fade-in page-wrapper" style={{ paddingBottom: '80px' }}>
+    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '16px' }}>
-          Hall of <span className="text-gradient">Fame</span>
-        </h2>
+        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '16px', letterSpacing: '-0.03em' }}>Hall of <span className="text-gradient">Fame</span></h2>
         <p className="text-secondary" style={{ fontSize: '1.15rem' }}>Top players competing for glory in Season {seasonId}</p>
       </div>
       
       {/* Filters */}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '32px', flexWrap: 'wrap' }}>
-        <div className="glass-panel" style={{ display: 'flex', padding: '6px', borderRadius: 'var(--radius-md)', gap: '6px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', flexWrap: 'wrap' }}>
+        <div className="glass-panel" style={{ display: 'flex', padding: '6px', borderRadius: '16px', gap: '8px' }}>
           <button 
             className={selectedGame === 1 ? 'btn-primary' : 'btn-secondary'} 
-            style={{ padding: '10px 24px', minHeight: 'auto', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}
+            style={{ padding: '8px 20px', minHeight: 'auto', borderRadius: '10px' }}
             onClick={() => setSelectedGame(1)}>Gas Dash
           </button>
           <button 
             className={selectedGame === 2 ? 'btn-primary' : 'btn-secondary'} 
-            style={{ padding: '10px 24px', minHeight: 'auto', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}
+            style={{ padding: '8px 20px', minHeight: 'auto', borderRadius: '10px' }}
             onClick={() => setSelectedGame(2)}>Block Memory
           </button>
           <button 
             className={selectedGame === 3 ? 'btn-primary' : 'btn-secondary'} 
-            style={{ padding: '10px 24px', minHeight: 'auto', borderRadius: 'var(--radius-sm)', fontSize: '0.9rem' }}
+            style={{ padding: '8px 20px', minHeight: 'auto', borderRadius: '10px' }}
             onClick={() => setSelectedGame(3)}>Precision Tap
           </button>
         </div>
@@ -94,50 +92,57 @@ export default function Leaderboard() {
       </div>
       
       {/* Leaderboard List */}
-      <div className="stagger" style={{ maxWidth: '720px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {CONTRACT_ADDRESS === "0x" ? (
           <div className="glass-panel" style={{ padding: '40px', textAlign: 'center' }}>Contract not deployed yet.</div>
         ) : loadingScores ? (
-          <div className="glass-panel animate-fade-in" style={{ padding: '60px', textAlign: 'center' }}>
-            <div className="spinner" />
-            <p style={{ marginTop: '16px', color: 'var(--text-2)' }}>Syncing onchain data...</p>
+          <div className="glass-panel" style={{ padding: '60px', textAlign: 'center' }}>
+            <div style={{ display: 'inline-block', width: '30px', height: '30px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--neon-accent)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+            <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Syncing onchain data...</p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
           </div>
         ) : top10.length === 0 ? (
-          <div className="glass-panel animate-fade-up" style={{ padding: '60px', textAlign: 'center' }}>
-            <h3 style={{ marginBottom: '8px', fontSize: '1.5rem' }}>No scores yet</h3>
-            <p style={{ color: 'var(--text-2)' }}>Be the first to claim the #1 spot in Season {seasonId}!</p>
+          <div className="glass-panel" style={{ padding: '60px', textAlign: 'center' }}>
+            <h3 style={{ marginBottom: '8px' }}>No scores yet</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>Be the first to claim the #1 spot in Season {seasonId}!</p>
           </div>
         ) : (
           top10.map((score, idx) => (
             <div 
               key={idx} 
-              className="glass-panel animate-fade-up" 
+              className="glass-panel" 
               style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
-                padding: '20px 28px', 
+                padding: '24px 32px', 
                 borderRadius: 'var(--radius-md)',
-                transition: 'transform var(--transition-spring), box-shadow var(--transition)',
+                transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                 cursor: 'default',
                 ...getRankStyle(idx)
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02) translateY(-2px)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1) translateY(0)'; }}
+              onMouseEnter={(e) => { 
+                e.currentTarget.style.transform = 'scale(1.02) translateY(-4px)'; 
+                if (idx > 2) e.currentTarget.style.boxShadow = '0 12px 40px 0 rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2)';
+              }}
+              onMouseLeave={(e) => { 
+                e.currentTarget.style.transform = 'scale(1) translateY(0)'; 
+                if (idx > 2) e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+              }}
             >
-              <div style={{ width: '60px', fontSize: '1.6rem', fontWeight: '800', color: getRankColor(idx), fontFamily: 'Space Grotesk' }}>
+              <div style={{ width: '60px', fontSize: '1.8rem', fontWeight: '900', fontFamily: 'Space Grotesk', color: getRankColor(idx) }}>
                 #{idx + 1}
               </div>
               
               <div style={{ flex: 1 }}>
-                <div className="mono" style={{ fontSize: '1.1rem', fontWeight: '600', color: 'var(--text-1)' }}>
+                <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '1.1rem', fontWeight: '600', color: 'var(--text-1)' }}>
                   {shortenAddress(score.player)}
                 </div>
-                {idx === 0 && <span className="badge badge-gold" style={{ marginTop: '8px' }}>✨ Champion</span>}
+                {idx === 0 && <span className="badge badge-gold" style={{ marginTop: '8px', display: 'inline-flex' }}>👑 Champion</span>}
               </div>
               
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '0.8rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>Score</div>
-                <div className="text-gradient" style={{ fontSize: '2rem', fontWeight: '800', fontFamily: 'Space Grotesk', lineHeight: '1.1' }}>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700' }}>Score</div>
+                <div className="text-gradient" style={{ fontSize: '2.2rem', fontWeight: '900', fontFamily: 'Space Grotesk' }}>
                   {Number(score.score)}
                 </div>
               </div>
