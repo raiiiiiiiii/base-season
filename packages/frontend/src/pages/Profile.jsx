@@ -47,7 +47,6 @@ export default function Profile() {
     bestScore: statsRaw[1],
     gamesPlayed: statsRaw[2],
     lastPlayed: statsRaw[3],
-    joinDate: statsRaw[4], // New field we added to the smart contract
   } : null;
 
   // Calculate current rank from leaderboard
@@ -77,10 +76,7 @@ export default function Profile() {
     }
   }
 
-  // Format join date
-  const formattedJoinDate = stats && stats.joinDate && Number(stats.joinDate) > 0 
-    ? new Date(Number(stats.joinDate) * 1000).toLocaleDateString()
-    : "N/A";
+  const formattedJoinDate = "Season 1 Player";
 
   return (
     <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '100px' }}>
