@@ -37,7 +37,11 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
   const { data: hash, writeContractAsync, isPending: isTxPending, error: txError } = useWriteContract();
   
   const { isLoading: isConfirming, isSuccess: isConfirmed } = 
-    useWaitForTransactionReceipt({ hash });
+    useWaitForTransactionReceipt({ 
+      hash,
+      confirmations: 1,
+      pollingInterval: 1500 // Base has 2s block times, poll faster than default 4s
+    });
 
   const [isSigning, setIsSigning] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
