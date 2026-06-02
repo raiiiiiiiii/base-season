@@ -109,7 +109,7 @@ export default function Profile() {
                   <img src={baseLogo} alt="Base" style={{ width: '16px', height: '16px' }} />
                   Wallet Address
                 </div>
-                <div className="mono" style={{ fontSize: '1.2rem', color: 'var(--text-1)' }}>{address}</div>
+                <div className="mono" style={{ fontSize: '1.2rem', color: 'var(--text-1)' }}>{address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ''}</div>
               </div>
               <div style={{ textAlign: 'right' }}>
                 <div style={{ color: 'var(--text-3)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Member Since</div>

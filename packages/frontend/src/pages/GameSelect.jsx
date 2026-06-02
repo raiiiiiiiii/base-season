@@ -100,17 +100,7 @@ export default function GameSelect() {
                 <h3 className="game-card-title">{game.title}</h3>
                 <p className="game-card-desc">{game.description}</p>
 
-                {/* Game Stats Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', background: 'rgba(0,0,0,0.2)', padding: '12px', borderRadius: '8px', marginBottom: '16px' }}>
-                  <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', textTransform: 'uppercase' }}>High Score</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-1)' }}>{stats.highestScore}</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', textTransform: 'uppercase' }}>Total Plays</div>
-                    <div style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--text-1)' }}>{stats.totalPlays}</div>
-                  </div>
-                </div>
+
 
                 {/* Difficulty & Time */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
