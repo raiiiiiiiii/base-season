@@ -1,23 +1,77 @@
+/* ═══════════════════════════════════════════
+   BLOCK MEMORY — Premium Game Styles
+═══════════════════════════════════════════ */
+
+/* ─── Stats Bar ─── */
 .game-stats {
   display: flex;
   justify-content: space-between;
-  padding: 15px 30px;
-  margin-bottom: 30px;
+  align-items: center;
+  padding: 16px 28px;
+  margin-bottom: 28px;
   font-size: 1.2rem;
+  font-weight: 600;
+  background: rgba(13, 14, 28, 0.6) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   font-weight: 600;
 }
 
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.stat-value.time-low {
+  color: var(--red) !important;
+  text-shadow: 0 0 12px var(--red-glow);
+  animation: popIn 0.3s ease;
+}
+
+/* ─── Level Progress Bar ─── */
+.level-progress {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  margin-bottom: 28px;
+  overflow: hidden;
+}
+
+.level-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px var(--cyan-glow);
+}
+
+/* ─── Card Grid ─── */
 .memory-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 16px;
+  gap: 14px;
   perspective: 1200px;
 }
 
+/* ─── Individual Card ─── */
 .memory-card {
-  aspect-ratio: 3/4;
+  aspect-ratio: 3 / 4;
   cursor: pointer;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   position: relative;
 }
 
@@ -26,24 +80,26 @@
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: transform 0.55s cubic-bezier(0.4, 0.0, 0.2, 1);
   transform-style: preserve-3d;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 }
 
 .memory-card:hover .card-inner {
-  transform: scale(1.05);
+  transform: scale(1.06);
 }
-
-.memory-card.flipped:hover .card-inner, .memory-card.matched:hover .card-inner {
-  transform: rotateY(180deg) scale(1.05);
+.memory-card.flipped:hover .card-inner,
+.memory-card.matched:hover .card-inner {
+  transform: rotateY(180deg) scale(1.04);
 }
 
 .memory-card.flipped .card-inner {
   transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+/* ─── Card Faces ─── */
+.card-front,
+.card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -52,46 +108,67 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  border-radius: 12px;
+  font-size: 2.2rem;
+  border-radius: var(--radius-md);
 }
 
 .card-front {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.1), 0 4px 15px rgba(0, 0, 0, 0.3);
-  background-image: 
-    linear-gradient(45deg, transparent 48%, rgba(255, 255, 255, 0.03) 48%, rgba(255, 255, 255, 0.03) 52%, transparent 52%);
-  background-size: 10px 10px;
+  background: linear-gradient(145deg, rgba(37, 99, 235, 0.1), rgba(139, 92, 246, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 12px rgba(0,0,0,0.3);
+  /* subtle cross-hatch pattern */
+  background-image:
+    linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.02) 48%, rgba(255,255,255,0.02) 52%, transparent 52%);
+  background-size: 8px 8px;
+}
+
+.card-front::after {
+  content: '?';
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
+  color: rgba(255, 255, 255, 0.08);
 }
 
 .card-front:hover {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(139, 92, 246, 0.25) 100%);
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.3), 0 8px 20px rgba(0, 0, 0, 0.5);
+  background-color: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.15), 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .card-back {
-  background: rgba(15, 15, 25, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  background: rgba(13, 14, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
   transform: rotateY(180deg);
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* ─── Matched State ─── */
 .memory-card.matched .card-back {
-  background: rgba(6, 182, 212, 0.15);
-  border-color: rgba(6, 182, 212, 0.6);
-  animation: pulseMatch 1.5s ease-in-out infinite alternate;
+  background: rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.5);
+  animation: matchGlow 1.8s ease-in-out infinite alternate;
 }
 
-@keyframes pulseMatch {
-  from { 
-    box-shadow: 0 0 10px rgba(6, 182, 212, 0.3), inset 0 0 10px rgba(6, 182, 212, 0.2); 
-    border-color: rgba(6, 182, 212, 0.5);
+@keyframes matchGlow {
+  from {
+    box-shadow: 0 0 8px rgba(6, 182, 212, 0.25), inset 0 0 8px rgba(6, 182, 212, 0.15);
+    border-color: rgba(6, 182, 212, 0.4);
   }
-  to { 
-    box-shadow: 0 0 25px rgba(6, 182, 212, 0.7), inset 0 0 20px rgba(6, 182, 212, 0.5); 
-    border-color: rgba(6, 182, 212, 1);
+  to {
+    box-shadow: 0 0 22px rgba(6, 182, 212, 0.6), inset 0 0 16px rgba(6, 182, 212, 0.35);
+    border-color: rgba(6, 182, 212, 0.8);
   }
+}
+
+/* ─── Level Complete Flash ─── */
+@keyframes levelUp {
+  0%   { opacity: 0; transform: scale(0.8) translateY(20px); }
+  50%  { opacity: 1; transform: scale(1.05) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.level-complete-msg {
+  animation: levelUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

@@ -1,0 +1,42 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_24-6bcaecd6243b5c2f370adaa7ed52c4acc6be296e",
+  "solcVersion": "0.8.24",
+  "solcLongVersion": "0.8.24+commit.e11b9ed9",
+  "compilerType": "solc",
+  "userSourceNameMap": {
+    "contracts/BaseSeasons.sol": "project/contracts/BaseSeasons.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/BaseSeasons.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.24;\n\ncontract BaseSeasons {\n    struct Player {\n        address wallet;\n        uint256 totalScore;\n        uint256 bestScore;\n        uint256 gamesPlayed;\n        uint256 currentStreak;\n        uint256 lastPlayed;\n    }\n\n    struct Score {\n        address player;\n        uint256 gameId;\n        uint256 score;\n        uint256 timestamp;\n        uint256 seasonId;\n    }\n\n    uint256 public currentSeason = 1;\n    uint256 public seasonStartTime;\n    uint256 public constant SEASON_DURATION = 7 days;\n\n    // player address => Player profile\n    mapping(address => Player) public players;\n\n    // seasonId => gameId => Score[]\n    mapping(uint256 => mapping(uint256 => Score[])) private leaderboards;\n\n    // We can also store the list of players who have participated to calculate top players overall\n    address[] public seasonParticipants;\n    mapping(uint256 => mapping(address => bool)) public hasParticipatedInSeason;\n    mapping(uint256 => mapping(address => uint256)) public playerSeasonTotalScore;\n\n    event ScoreSubmitted(address indexed player, uint256 indexed gameId, uint256 score, uint256 timestamp, uint256 seasonId);\n    event StreakUpdated(address indexed player, uint256 newStreak);\n    event NewSeasonStarted(uint256 seasonId, uint256 startTime);\n\n    constructor() {\n        seasonStartTime = block.timestamp;\n    }\n\n    function submitScore(uint256 gameId, uint256 score) external {\n        _checkAndStartSeason();\n\n        Player storage p = players[msg.sender];\n        \n        // Initialize wallet if new\n        if (p.wallet == address(0)) {\n            p.wallet = msg.sender;\n        }\n\n        // Update streak logic\n        if (p.lastPlayed > 0) {\n            uint256 timeSinceLast = block.timestamp - p.lastPlayed;\n            if (timeSinceLast >= 1 days && timeSinceLast <= 2 days) {\n                p.currentStreak++;\n                emit StreakUpdated(msg.sender, p.currentStreak);\n            } else if (timeSinceLast > 2 days) {\n                p.currentStreak = 1; // reset streak\n                emit StreakUpdated(msg.sender, p.currentStreak);\n            }\n        } else {\n            p.currentStreak = 1;\n        }\n\n        // Update stats\n        p.lastPlayed = block.timestamp;\n        p.gamesPlayed++;\n        p.totalScore += score;\n        if (score > p.bestScore) {\n            p.bestScore = score;\n        }\n\n        // Season total tracking\n        if (!hasParticipatedInSeason[currentSeason][msg.sender]) {\n            hasParticipatedInSeason[currentSeason][msg.sender] = true;\n            seasonParticipants.push(msg.sender);\n        }\n        playerSeasonTotalScore[currentSeason][msg.sender] += score;\n\n        // Record score in current season leaderboard\n        Score memory newScore = Score({\n            player: msg.sender,\n            gameId: gameId,\n            score: score,\n            timestamp: block.timestamp,\n            seasonId: currentSeason\n        });\n\n        leaderboards[currentSeason][gameId].push(newScore);\n\n        emit ScoreSubmitted(msg.sender, gameId, score, block.timestamp, currentSeason);\n    }\n\n    function _checkAndStartSeason() internal {\n        if (block.timestamp >= seasonStartTime + SEASON_DURATION) {\n            currentSeason++;\n            seasonStartTime = block.timestamp;\n            \n            // Note: In a true production app with many users, we wouldn't loop or keep a growing array\n            // but for simplicity we can clear participants or leave it tracking. \n            // We just leave it and iterate correctly in getTopPlayers if needed, \n            // though returning large arrays is bad practice. We will keep it minimal.\n            delete seasonParticipants; // reset participants for the new season\n            \n            emit NewSeasonStarted(currentSeason, seasonStartTime);\n        }\n    }\n\n    function startNewSeason() external {\n        require(block.timestamp >= seasonStartTime + SEASON_DURATION, \"Season not over\");\n        currentSeason++;\n        seasonStartTime = block.timestamp;\n        delete seasonParticipants;\n        emit NewSeasonStarted(currentSeason, seasonStartTime);\n    }\n\n    function getPlayerStats(address player) external view returns (Player memory) {\n        return players[player];\n    }\n\n    function getLeaderboard(uint256 gameId, uint256 seasonId) external view returns (Score[] memory) {\n        return leaderboards[seasonId][gameId];\n    }\n\n    // Returns addresses of all participants this season, frontend can sort by score\n    // Alternatively, we return the top 10 calculated on chain. Let's do a simple bounded sort on chain for the prompt requirement.\n    function getTopPlayers(uint256 seasonId) external view returns (address[] memory topAddresses, uint256[] memory topScores) {\n        uint256 count = seasonParticipants.length;\n        uint256 returnCount = count > 10 ? 10 : count;\n        \n        topAddresses = new address[](returnCount);\n        topScores = new uint256[](returnCount);\n        \n        // Very basic sorting for view function. Will cost gas for view if called on-chain, but free via RPC.\n        // Copy data to memory for sorting\n        address[] memory tempAddresses = new address[](count);\n        uint256[] memory tempScores = new uint256[](count);\n        \n        for (uint256 i = 0; i < count; i++) {\n            tempAddresses[i] = seasonParticipants[i];\n            tempScores[i] = playerSeasonTotalScore[seasonId][seasonParticipants[i]];\n        }\n        \n        // Sort descending\n        for (uint256 i = 0; i < count; i++) {\n            for (uint256 j = i + 1; j < count; j++) {\n                if (tempScores[j] > tempScores[i]) {\n                    uint256 tScore = tempScores[i];\n                    tempScores[i] = tempScores[j];\n                    tempScores[j] = tScore;\n                    \n                    address tAddr = tempAddresses[i];\n                    tempAddresses[i] = tempAddresses[j];\n                    tempAddresses[j] = tAddr;\n                }\n            }\n        }\n        \n        for (uint256 i = 0; i < returnCount; i++) {\n            topAddresses[i] = tempAddresses[i];\n            topScores[i] = tempScores[i];\n        }\n        \n        return (topAddresses, topScores);\n    }\n\n    function getCurrentSeason() external view returns (uint256) {\n        return currentSeason;\n    }\n}\n"
+      }
+    }
+  }
+}

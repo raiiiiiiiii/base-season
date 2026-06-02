@@ -1,92 +1,122 @@
+/* ═══════════════════════════════════════════
+   PRECISION TAP — Premium Game Styles
+═══════════════════════════════════════════ */
+
 .pt-game-area {
   width: 100%;
   max-width: 600px;
-  height: 400px;
+  height: 440px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
-  cursor: pointer;
+  cursor: crosshair;
   user-select: none;
+  background: radial-gradient(circle at 50% 50%, rgba(20, 22, 40, 0.4) 0%, transparent 70%);
+  border-radius: var(--radius-xl);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  margin: 0 auto;
 }
 
+.pt-game-area:active {
+  cursor: crosshair;
+}
+
+/* ─── Score Display ─── */
 .pt-score {
   position: absolute;
-  top: 20px;
-  font-size: 1.5rem;
-  font-weight: 700;
+  top: 32px;
+  font-size: 1.8rem;
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
 }
 
+/* ─── Feedback Text (Hit / Miss) ─── */
 .pt-feedback {
   position: absolute;
-  top: 80px;
-  font-size: 2rem;
-  font-weight: 800;
-  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  top: 96px;
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: 'Space Grotesk', sans-serif;
+  animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  z-index: 10;
 }
 
 .pt-feedback.hit {
-  color: var(--neon-accent);
-  text-shadow: 0 0 10px rgba(0, 194, 255, 0.5);
+  color: var(--cyan);
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.2);
 }
 
 .pt-feedback.miss {
-  color: #ff3366;
-  text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+  color: var(--red);
+  text-shadow: 0 0 20px rgba(244, 63, 94, 0.6), 0 0 40px rgba(244, 63, 94, 0.2);
 }
 
+/* ─── Main Bar Container ─── */
 .pt-bar-container {
-  width: 80%;
-  height: 48px;
-  background: rgba(15, 15, 25, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
+  width: 85%;
+  height: 56px;
+  background: rgba(8, 9, 18, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 20px rgba(6, 182, 212, 0.1);
-  backdrop-filter: blur(8px);
+  box-shadow: inset 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(139, 92, 246, 0.08);
+  backdrop-filter: blur(12px);
 }
 
+/* Inner tick marks to look like a meter */
+.pt-bar-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, transparent 95%, rgba(255, 255, 255, 0.03) 95%);
+  background-size: 20px 100%;
+  pointer-events: none;
+}
+
+/* ─── Target Zone ─── */
 .pt-target {
   position: absolute;
   height: 100%;
-  background: linear-gradient(90deg, rgba(6, 182, 212, 0.1), rgba(6, 182, 212, 0.4), rgba(6, 182, 212, 0.1));
-  border-left: 2px solid var(--neon-accent);
-  border-right: 2px solid var(--neon-accent);
-  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.6), 0 0 15px rgba(6, 182, 212, 0.4);
-  animation: targetPulse 2s ease-in-out infinite alternate;
+  background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.35), rgba(6, 182, 212, 0.15));
+  border-left: 2px solid var(--cyan);
+  border-right: 2px solid var(--cyan);
+  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.5), 0 0 15px rgba(6, 182, 212, 0.3);
+  animation: targetPulse 2.5s ease-in-out infinite alternate;
+  border-radius: 4px;
 }
 
 @keyframes targetPulse {
-  from { box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.4), 0 0 10px rgba(6, 182, 212, 0.2); }
-  to { box-shadow: inset 0 0 25px rgba(6, 182, 212, 0.8), 0 0 20px rgba(6, 182, 212, 0.6); }
+  from { box-shadow: inset 0 0 15px rgba(6, 182, 212, 0.3), 0 0 10px rgba(6, 182, 212, 0.1); }
+  to   { box-shadow: inset 0 0 35px rgba(6, 182, 212, 0.7), 0 0 25px rgba(6, 182, 212, 0.5); }
 }
 
+/* ─── Moving Indicator Line ─── */
 .pt-line {
   position: absolute;
-  height: 140%;
-  top: -20%;
+  height: 160%;
+  top: -30%;
   width: 6px;
-  background: #fff;
-  border-radius: 3px;
+  background: #FFF;
+  border-radius: 99px;
   transform: translateX(-50%);
-  box-shadow: 0 0 15px #fff, 0 0 30px var(--violet-accent);
+  box-shadow: 0 0 15px #FFF, 0 0 30px var(--violet);
   z-index: 2;
+  transition: transform 0.05s linear; /* smooth out rendering if needed */
 }
 
+/* Comet tail effect */
 .pt-line::after {
   content: '';
   position: absolute;
-  top: 10%;
-  height: 80%;
-  width: 200px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2));
+  top: 15%;
+  height: 70%;
+  width: 150px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25));
   transform: translateX(-100%);
-  filter: blur(4px);
-}
-
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
+  filter: blur(6px);
+  pointer-events: none;
 }

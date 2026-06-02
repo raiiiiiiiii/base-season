@@ -201,17 +201,18 @@ export default function GasDash() {
   }, [isPlaying]);
 
   return (
-    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <h2>Gas Dash</h2>
-        <p className="text-secondary">Use Left/Right arrows to dodge and collect energy</p>
+    <div className="container animate-fade-in page-wrapper" style={{ paddingBottom: '80px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '12px' }}>Gas <span className="text-gradient">Dash</span></h2>
+        <p className="text-secondary" style={{ fontSize: '1.1rem' }}>Use Left/Right arrows to dodge and collect energy</p>
       </div>
       
       <div style={{ display: 'flex', justifyContent: 'center', position: 'relative' }}>
         {!isPlaying && !gameOver && (
-          <div className="glass-panel" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '40px', textAlign: 'center' }}>
-            <h3>Ready to run?</h3>
-            <button className="btn-primary" style={{ marginTop: '20px' }} onClick={startGame}>Start Game</button>
+          <div className="glass-panel animate-fade-up" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '48px', textAlign: 'center', borderRadius: 'var(--radius-lg)' }}>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Ready to run?</h3>
+            <p className="text-secondary" style={{ marginBottom: '24px' }}>Dodge the red obstacles, grab the blue orbs!</p>
+            <button className="btn-primary glow-hover" onClick={startGame}>Start Game</button>
           </div>
         )}
         
@@ -222,17 +223,24 @@ export default function GasDash() {
         )}
         
         <div style={{ position: 'relative' }}>
+          {/* Subtle glow behind canvas */}
+          <div style={{ position: 'absolute', inset: -2, background: 'linear-gradient(180deg, var(--cyan), var(--violet))', filter: 'blur(12px)', opacity: 0.3, zIndex: -1, borderRadius: 'var(--radius-lg)' }} />
           <canvas 
             ref={canvasRef} 
             width={400} 
             height={600} 
-            className="glass-panel"
-            style={{ background: '#050505', borderRadius: '16px', display: 'block' }}
+            style={{ 
+              background: 'var(--bg-darker)', 
+              borderRadius: 'var(--radius-lg)', 
+              display: 'block',
+              border: '1px solid var(--border)',
+              boxShadow: 'var(--shadow-md)'
+            }}
           />
           {isPlaying && !gameOver && (
-            <div className="game-hud glass-panel" style={{ position: 'absolute', top: '15px', left: '15px', padding: '10px 20px', borderRadius: '12px', background: 'rgba(10, 10, 15, 0.5)' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>Score</span>
-              <div ref={scoreRef} className="text-gradient" style={{ fontSize: '1.5rem', fontWeight: '800', fontFamily: 'Space Grotesk' }}>0</div>
+            <div className="glass-panel" style={{ position: 'absolute', top: '16px', left: '16px', padding: '12px 24px', borderRadius: 'var(--radius-md)', background: 'rgba(13, 14, 28, 0.7)' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600', display: 'block', marginBottom: '4px' }}>Score</span>
+              <div ref={scoreRef} className="text-gradient" style={{ fontSize: '1.8rem', fontWeight: '800', fontFamily: 'Space Grotesk', lineHeight: 1 }}>0</div>
             </div>
           )}
         </div>

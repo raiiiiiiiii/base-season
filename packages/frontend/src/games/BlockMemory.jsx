@@ -102,17 +102,18 @@ export default function BlockMemory() {
   };
 
   return (
-    <div className="container animate-fade-in" style={{ paddingTop: '40px', paddingBottom: '60px' }}>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <h2>Block Memory</h2>
-        <p className="text-secondary">Match pairs before time runs out!</p>
+    <div className="container animate-fade-in page-wrapper" style={{ paddingBottom: '80px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '12px' }}>Block <span className="text-gradient">Memory</span></h2>
+        <p className="text-secondary" style={{ fontSize: '1.1rem' }}>Match all pairs before the timer runs out</p>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center', position: 'relative', minHeight: '500px' }}>
+      <div style={{ position: 'relative', maxWidth: '800px', margin: '0 auto' }}>
         {!isPlaying && !gameOver && (
-          <div className="glass-panel" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '40px', textAlign: 'center' }}>
-            <h3>Ready to flip?</h3>
-            <button className="btn-primary" style={{ marginTop: '20px' }} onClick={startGame}>Start Game</button>
+          <div className="glass-panel animate-fade-up" style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', zIndex: 10, padding: '48px', textAlign: 'center', width: '100%', borderRadius: 'var(--radius-lg)' }}>
+            <h3 style={{ fontSize: '1.8rem', marginBottom: '8px' }}>Ready to test your memory?</h3>
+            <p className="text-secondary" style={{ marginBottom: '24px' }}>Find all matching pairs before time runs out!</p>
+            <button className="btn-primary glow-hover" onClick={startGame}>Start Game</button>
           </div>
         )}
 

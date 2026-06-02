@@ -157,16 +157,16 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
         </h3>
         
         {/* Visual Share Card */}
-        <div className="share-card" style={{ background: 'var(--bg-darker)', borderRadius: '12px', padding: '20px', marginBottom: '25px', border: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '100px', height: '100px', background: 'var(--primary-blue)', filter: 'blur(50px)', opacity: 0.5 }}></div>
-          <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '100px', height: '100px', background: 'var(--neon-accent)', filter: 'blur(50px)', opacity: 0.5 }}></div>
+        <div className="share-card" style={{ background: 'var(--bg-darker)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '32px', border: '1px solid rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '120px', height: '120px', background: 'var(--primary)', filter: 'blur(60px)', opacity: 0.4 }}></div>
+          <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '120px', height: '120px', background: 'var(--cyan)', filter: 'blur(60px)', opacity: 0.3 }}></div>
           
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <span className="badge badge-primary" style={{ marginBottom: '10px', display: 'inline-block' }}>Season {seasonId}</span>
-            <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1px' }}>{getGameName()}</div>
-            <div className="text-gradient" style={{ fontSize: '4rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1.1', margin: '10px 0' }}>{score}</div>
+            <span className="badge badge-cyan" style={{ marginBottom: '12px', display: 'inline-block' }}>Season {seasonId}</span>
+            <div style={{ fontSize: '1.05rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>{getGameName()}</div>
+            <div className="text-gradient" style={{ fontSize: '4.5rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1', margin: '12px 0' }}>{score}</div>
             {isConnected && (
-              <div style={{ fontFamily: 'monospace', color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.05)', padding: '4px 10px', borderRadius: '8px', display: 'inline-block' }}>
+              <div className="mono" style={{ color: 'var(--text-2)', background: 'rgba(255,255,255,0.06)', padding: '6px 12px', borderRadius: '8px', display: 'inline-block', fontSize: '0.9rem' }}>
                 Player: {shortenAddress(address)}
               </div>
             )}
