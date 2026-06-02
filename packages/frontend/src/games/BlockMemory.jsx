@@ -25,11 +25,11 @@ export default function BlockMemory() {
   };
 
   const generateBoard = (currentLevel) => {
-    // Triplets instead of pairs. Start with 4 triplets (12 cards) up to 8 (24 cards)
-    const tripletsCount = Math.min(3 + currentLevel, 8);
-    const selectedIcons = ICONS.slice(0, tripletsCount);
-    // Create triplets
-    const deck = [...selectedIcons, ...selectedIcons, ...selectedIcons]
+    // Start with 6 pairs (12 cards) up to 10 pairs (20 cards)
+    const pairsCount = Math.min(4 + currentLevel * 2, 10);
+    const selectedIcons = ICONS.slice(0, pairsCount);
+    // Create pairs
+    const deck = [...selectedIcons, ...selectedIcons]
       .sort(() => Math.random() - 0.5)
       .map((icon, index) => ({ id: index, icon }));
       
@@ -80,13 +80,13 @@ export default function BlockMemory() {
     const newFlipped = [...flippedIndices, index];
     setFlippedIndices(newFlipped);
 
-    if (newFlipped.length === 3) {
+    if (newFlipped.length === 2) {
       setIsProcessing(true);
-      const [first, second, third] = newFlipped;
-      if (cards[first].icon === cards[second].icon && cards[second].icon === cards[third].icon) {
-        // Match found for 3 cards
-        setMatchedIndices(prev => new Set(prev).add(first).add(second).add(third));
-        setScore(s => s + 30); // Higher score for 3 cards
+      const [first, second] = newFlipped;
+      if (cards[first].icon === cards[second].icon) {
+        // Match found for 2 cards
+        setMatchedIndices(prev => new Set(prev).add(first).add(second));
+        setScore(s => s + 20); // Score for pairs
         setIsProcessing(false);
       } else {
         // No match

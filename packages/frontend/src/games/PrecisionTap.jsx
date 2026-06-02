@@ -8,8 +8,9 @@ export default function PrecisionTap() {
   const [isPlaying, setIsPlaying] = useState(false);
   
   const [position, setPosition] = useState(0); // 0 to 100
-  const [direction, setDirection] = useState(1);
-  const [speed, setSpeed] = useState(1.5);
+  const speedRef = useRef(1.5);
+  const directionRef = useRef(1);
+  const [speedUI, setSpeedUI] = useState(1.5); // just for UI or logic if needed
   
   const [targetCenter, setTargetCenter] = useState(50);
   const [targetWidth, setTargetWidth] = useState(20);
@@ -20,7 +21,9 @@ export default function PrecisionTap() {
 
   const startGame = () => {
     setScore(0);
-    setSpeed(1.5);
+    speedRef.current = 1.5;
+    directionRef.current = 1;
+    setSpeedUI(1.5);
     setTargetWidth(20);
     setTargetCenter(Math.random() * 60 + 20); // 20 to 80
     setGameOver(false);
@@ -32,12 +35,12 @@ export default function PrecisionTap() {
     if (!isPlaying) return;
     
     setPosition(prev => {
-      let nextPos = prev + (speed * direction);
+      let nextPos = prev + (speedRef.current * directionRef.current);
       if (nextPos >= 100) {
-        setDirection(-1);
+        directionRef.current = -1;
         nextPos = 100 - (nextPos - 100);
       } else if (nextPos <= 0) {
-        setDirection(1);
+        directionRef.current = 1;
         nextPos = -nextPos;
       }
       return nextPos;
@@ -51,7 +54,7 @@ export default function PrecisionTap() {
       requestRef.current = requestAnimationFrame(updatePosition);
     }
     return () => cancelAnimationFrame(requestRef.current);
-  }, [isPlaying, direction, speed]); // Depend on state that changes frame by frame
+  }, [isPlaying]); // Only run when isPlaying changes
 
   const handleTap = () => {
     if (!isPlaying || gameOver) return;
@@ -79,7 +82,9 @@ export default function PrecisionTap() {
       setScore(s => s + addedScore);
       
       // Make game harder
-      setSpeed(s => Math.min(s + 0.3, 5));
+      const newSpeed = Math.min(speedRef.current + 0.3, 5);
+      speedRef.current = newSpeed;
+      setSpeedUI(newSpeed);
       setTargetWidth(w => Math.max(w - 1, 5));
       setTargetCenter(Math.random() * (100 - targetWidth) + targetWidth/2);
       

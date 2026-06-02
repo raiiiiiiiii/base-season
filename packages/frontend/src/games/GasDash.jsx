@@ -163,15 +163,28 @@ export default function GasDash() {
       }
     };
     
-    const loop = () => {
-      update();
+    let lastTime = 0;
+    let accumulator = 0;
+    const TIME_STEP = 1000 / 60; // 60 updates per second
+    
+    const loop = (timestamp) => {
+      if (!lastTime) lastTime = timestamp;
+      const dt = timestamp - lastTime;
+      lastTime = timestamp;
+      accumulator += dt;
+      
+      while (accumulator >= TIME_STEP && isPlaying) {
+        update();
+        accumulator -= TIME_STEP;
+      }
+      
       draw();
       if (isPlaying) {
         animationFrameId = requestAnimationFrame(loop);
       }
     };
     
-    loop();
+    animationFrameId = requestAnimationFrame(loop);
     
     // Controls
     const handleKeyDown = (e) => {
