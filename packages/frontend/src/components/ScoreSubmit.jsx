@@ -120,6 +120,7 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
           parsedSig.r,
           parsedSig.s
         ],
+        dataSuffix: '0x62635f31316a7262676b310b0080218021802180218021802180218021'
       });
       
     } catch (err) {
