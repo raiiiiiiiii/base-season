@@ -156,81 +156,20 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
           {isConfirmed ? 'Legendary!' : 'Game Over'}
         </h3>
         
-        {/* ID Card Style Share Card */}
-        <div className="share-card" style={{ 
-          background: '#0d0d11', 
-          borderRadius: '12px', 
-          padding: '24px', 
-          marginBottom: '32px', 
-          position: 'relative', 
-          overflow: 'hidden',
-          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-          border: '1px solid #1a1a24',
-          borderTop: '2px solid transparent',
-          backgroundImage: 'linear-gradient(#0d0d11, #0d0d11), linear-gradient(90deg, #F59E0B, #FDE68A, #F59E0B)',
-          backgroundOrigin: 'border-box',
-          backgroundClip: 'padding-box, border-box',
-          textAlign: 'left',
-          fontFamily: "'JetBrains Mono', monospace",
-          color: '#8b8b99'
-        }}>
-          {/* Subtle Watermark */}
-          <div style={{ position: 'absolute', top: '50%', right: '10%', transform: 'translateY(-50%)', fontSize: '180px', fontWeight: '900', color: 'rgba(255,255,255,0.015)', fontFamily: 'Space Grotesk', pointerEvents: 'none' }}>
-            B
-          </div>
+        {/* Visual Share Card */}
+        <div className="share-card" style={{ background: 'var(--bg-darker)', borderRadius: 'var(--radius-md)', padding: '24px', marginBottom: '32px', border: '1px solid rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '120px', height: '120px', background: 'var(--primary)', filter: 'blur(60px)', opacity: 0.4 }}></div>
+          <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '120px', height: '120px', background: 'var(--cyan)', filter: 'blur(60px)', opacity: 0.3 }}></div>
           
-          {/* Top Row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div style={{ background: '#e0e0e0', color: '#0d0d11', padding: '4px 8px', fontWeight: 'bold', fontSize: '1.2rem', fontFamily: 'Space Grotesk' }}>B<span style={{ fontSize: '0.6rem', verticalAlign: 'super' }}>(s)</span></div>
-              <div style={{ fontSize: '0.75rem', letterSpacing: '0.15em', opacity: 0.6 }}>AUTH ID EX-S{seasonId}</div>
-            </div>
-            <div style={{ border: '1px solid rgba(245, 158, 11, 0.3)', color: '#FDE68A', padding: '4px 12px', fontSize: '0.7rem', letterSpacing: '0.15em', borderRadius: '99px', background: 'rgba(245, 158, 11, 0.05)' }}>
-              ONCHAIN RECORD
-            </div>
-          </div>
-
-          {/* Middle Content */}
-          <div style={{ display: 'flex', gap: '24px', alignItems: 'center', marginBottom: '32px', position: 'relative', zIndex: 1 }}>
-            {/* Avatar / Icon Ring */}
-            <div style={{ width: '80px', height: '80px', borderRadius: '50%', border: '2px solid #F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#13131a', flexShrink: 0, boxShadow: '0 0 15px rgba(245, 158, 11, 0.15)' }}>
-              <span style={{ fontSize: '2rem' }}>{gameId === 1 ? '⚡' : gameId === 2 ? '🧠' : '🎯'}</span>
-            </div>
-            
-            {/* Details */}
-            <div>
-              <div style={{ fontSize: '1.8rem', color: '#fff', fontWeight: 'bold', fontFamily: 'Space Grotesk', letterSpacing: '-0.02em', marginBottom: '4px', lineHeight: 1 }}>{getGameName()}</div>
-              <div style={{ color: '#F59E0B', fontSize: '0.8rem', letterSpacing: '0.15em', marginBottom: '16px', fontWeight: '600' }}>SEASON {seasonId} OPERATOR</div>
-              
-              <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', columnGap: '12px', rowGap: '8px', fontSize: '0.75rem', letterSpacing: '0.1em' }}>
-                <div style={{ opacity: 0.5 }}>SCORE</div>
-                <div style={{ color: '#e0e0e0', fontWeight: 'bold' }}>{score} PTS</div>
-                
-                <div style={{ opacity: 0.5 }}>PLAYER</div>
-                <div style={{ color: '#e0e0e0' }}>{isConnected ? shortenAddress(address) : 'UNAUTHENTICATED'}</div>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <span className="badge badge-cyan" style={{ marginBottom: '12px', display: 'inline-block' }}>Season {seasonId}</span>
+            <div style={{ fontSize: '1.05rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '600' }}>{getGameName()}</div>
+            <div className="text-gradient" style={{ fontSize: '4.5rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1', margin: '12px 0' }}>{score}</div>
+            {isConnected && (
+              <div className="mono" style={{ color: 'var(--text-2)', background: 'rgba(255,255,255,0.06)', padding: '6px 12px', borderRadius: '8px', display: 'inline-block', fontSize: '0.9rem' }}>
+                Player: {shortenAddress(address)}
               </div>
-            </div>
-          </div>
-
-          {/* Bottom Divider */}
-          <div style={{ height: '1px', background: 'rgba(255,255,255,0.05)', marginBottom: '16px', position: 'relative', zIndex: 1 }}></div>
-
-          {/* Bottom Row */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
-            <div style={{ fontSize: '0.7rem', letterSpacing: '0.15em', opacity: 0.5 }}>
-              UID // {isConnected ? address.substring(0, 14).toUpperCase() : 'UNKNOWN'}
-            </div>
-            {/* Decorative Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 10px)', gap: '4px', opacity: 0.2 }}>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #fff' }}></div>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #fff' }}></div>
-              <div style={{ width: '10px', height: '10px', border: '1px solid #fff' }}></div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 4px)', gap: '2px' }}>
-                 <div style={{ width: '4px', height: '4px', background: '#fff' }}></div>
-                 <div style={{ width: '4px', height: '4px', background: '#fff' }}></div>
-                 <div style={{ width: '4px', height: '4px', background: '#fff' }}></div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
         
