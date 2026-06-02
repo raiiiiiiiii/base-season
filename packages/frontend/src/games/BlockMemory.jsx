@@ -89,6 +89,7 @@ export default function BlockMemory() {
         // Match found for 2 cards
         setMatchedIndices(prev => new Set(prev).add(first).add(second));
         setScore(s => s + 20); // Score for pairs
+        setFlippedIndices([]); // Clear flipped indices so next pair can be selected
         setIsProcessing(false);
       } else {
         // No match
