@@ -7,6 +7,7 @@ contract BaseSeasons {
         uint256 bestScore;
         uint256 gamesPlayed;
         uint256 lastPlayed;
+        uint256 joinDate;
     }
 
     struct Score {
@@ -25,9 +26,18 @@ contract BaseSeasons {
     uint256 public seasonStartTime;
     uint256 public constant SEASON_DURATION = 7 days;
 
+    // Global Statistics
+    uint256 public globalTotalPlayers;
+    uint256 public globalGamesPlayed;
+    uint256 public globalHighestScore;
+
     mapping(address => Player) public players;
     mapping(uint256 => mapping(uint256 => Score[])) private leaderboards; // seasonId => gameId => scores
     mapping(address => uint256) public nonces; // Anti-replay nonce per player
+    
+    // Game-specific statistics
+    mapping(uint256 => uint256) public gameTotalPlays;
+    mapping(uint256 => uint256) public gameHighestScores;
 
     event ScoreSubmitted(address indexed player, uint256 indexed gameId, uint256 score, uint256 timestamp, uint256 seasonId);
     event NewSeasonStarted(uint256 seasonId, uint256 startTime);
@@ -76,11 +86,27 @@ contract BaseSeasons {
         Player storage p = players[msg.sender];
         require(block.timestamp >= p.lastPlayed + 30 seconds, "Cooldown active");
 
+        if (p.joinDate == 0) {
+            p.joinDate = block.timestamp;
+            globalTotalPlayers++;
+        }
+
         p.lastPlayed = block.timestamp;
         p.gamesPlayed++;
         p.totalScore += score;
         if (score > p.bestScore) {
             p.bestScore = score;
+        }
+
+        // Global and Game Stats update
+        globalGamesPlayed++;
+        gameTotalPlays[gameId]++;
+        
+        if (score > globalHighestScore) {
+            globalHighestScore = score;
+        }
+        if (score > gameHighestScores[gameId]) {
+            gameHighestScores[gameId] = score;
         }
 
         // 6. Record Score onchain

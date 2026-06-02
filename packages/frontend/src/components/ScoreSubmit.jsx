@@ -242,7 +242,7 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
         
         {!isConnected ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
-            <p style={{ color: 'var(--text-secondary)' }}>Connect wallet to submit your score securely onchain</p>
+            <p style={{ color: 'var(--text-secondary)' }}>Connect wallet to securely record your score. Scores secured on Base.</p>
             <ConnectButton />
             <button className="btn-secondary" onClick={onRestart} style={{ width: '100%' }}>Play Again</button>
           </div>
@@ -272,7 +272,7 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
                     onClick={handleSubmit} 
                     disabled={isSigning || isTxPending || isConfirming}
                   >
-                    {isSigning ? 'Sign in Wallet...' : isTxPending ? 'Confirming Tx...' : isConfirming ? 'Minting Score on Base...' : 'Sign & Submit Score'}
+                    {isSigning ? 'Sign in Wallet...' : isTxPending ? 'Confirming Tx...' : isConfirming ? 'Securing Score on Base...' : 'Sign & Submit Score'}
                   </button>
                 )}
                 <button className="btn-secondary" onClick={onRestart} disabled={isSigning || isTxPending || isConfirming}>
