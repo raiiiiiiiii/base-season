@@ -1,0 +1,16 @@
+{
+  "projectId": "prj_H61ktIL35Og72z49cybQCvXj2YrI",
+  "orgId": "team_3dNJeDjFxy9Jdyq3ULYWLaQ0",
+  "projectName": "frontend",
+  "settings": {
+    "createdAt": 1780230173974,
+    "framework": "vite",
+    "devCommand": null,
+    "installCommand": "npm install --legacy-peer-deps",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

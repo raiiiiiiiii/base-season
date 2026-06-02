@@ -55,7 +55,7 @@ const AchievementCard = forwardRef(({
         {/* Header */}
         <div className="card-header">
           <div className="brand-section">
-            <div className="logo-icon">
+            <div className="achievement-logo-icon">
               <svg width="60%" height="60%" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
               </svg>

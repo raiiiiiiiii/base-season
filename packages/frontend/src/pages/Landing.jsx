@@ -65,25 +65,6 @@ export default function Landing() {
 
         {/* Center orb */}
         <div className="hero-orb-inner">🏆</div>
-
-        {/* Floating stat cards */}
-        <div className="glass-panel stat-card float-1">
-          <span className="stat-card-label">Season</span>
-          <span className="stat-card-value text-gradient">#{seasonId} Active</span>
-        </div>
-
-        <div className="glass-panel stat-card float-2">
-          <span className="stat-card-label">Network</span>
-          <span className="stat-card-value" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.1rem' }}>
-            <img src={baseLogo} alt="Base" style={{ width: '20px', height: '20px' }} />
-            Base Mainnet
-          </span>
-        </div>
-
-        <div className="glass-panel stat-card float-3">
-          <span className="stat-card-label">Top Prize</span>
-          <span className="stat-card-value text-gradient-gold">Exclusive NFT</span>
-        </div>
       </div>
     </div>
   );
