@@ -91,7 +91,7 @@ export default function Landing() {
           <div className="hero-orb" />
 
           {/* Center orb */}
-          <div className="hero-orb-inner">🏆</div>
+          <div className="hero-orb-inner">🎮</div>
           
 
         </div>
