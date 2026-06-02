@@ -157,17 +157,60 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
         </h3>
         
         {/* Visual Share Card */}
-        <div className="share-card" style={{ background: 'rgba(13, 14, 28, 0.8)', borderRadius: 'var(--radius-lg)', padding: '28px', marginBottom: '32px', border: '1px solid rgba(255,255,255,0.08)', position: 'relative', overflow: 'hidden', boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)' }}>
-          <div style={{ position: 'absolute', top: '-60px', right: '-60px', width: '120px', height: '120px', background: 'var(--primary)', filter: 'blur(60px)', opacity: 0.4 }}></div>
-          <div style={{ position: 'absolute', bottom: '-60px', left: '-60px', width: '120px', height: '120px', background: 'var(--cyan)', filter: 'blur(60px)', opacity: 0.4 }}></div>
+        <div className="share-card" style={{ 
+          background: 'linear-gradient(135deg, rgba(20, 22, 40, 0.95), rgba(10, 11, 20, 0.95))', 
+          borderRadius: '24px', 
+          padding: '32px', 
+          marginBottom: '32px', 
+          border: '1px solid rgba(255,255,255,0.1)', 
+          position: 'relative', 
+          overflow: 'hidden', 
+          boxShadow: '0 20px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2), inset 0 0 60px rgba(6, 182, 212, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}>
+          {/* Hex grid background */}
+          <div style={{ position: 'absolute', inset: 0, opacity: 0.15, backgroundImage: 'radial-gradient(circle at center, #2563EB 2px, transparent 2px)', backgroundSize: '16px 16px', zIndex: 0 }}></div>
           
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <span className="badge badge-cyan" style={{ marginBottom: '12px', display: 'inline-flex' }}>Season {seasonId}</span>
-            <div style={{ fontSize: '1rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: '700' }}>{getGameName()}</div>
-            <div className="text-gradient" style={{ fontSize: '4.5rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1.1', margin: '16px 0', textShadow: '0 0 40px var(--cyan-glow)' }}>{score}</div>
+          {/* Holographic Orbs */}
+          <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '150px', height: '150px', background: 'var(--primary)', filter: 'blur(50px)', opacity: 0.5, zIndex: 0 }}></div>
+          <div style={{ position: 'absolute', bottom: '-50px', left: '-50px', width: '150px', height: '150px', background: 'var(--cyan)', filter: 'blur(50px)', opacity: 0.5, zIndex: 0 }}></div>
+          
+          {/* Scanner Line Overlay */}
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.02) 50%)', backgroundSize: '100% 4px', pointerEvents: 'none', zIndex: 2 }}></div>
+
+          <div style={{ position: 'relative', zIndex: 1, width: '100%' }}>
+            {/* Header row */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', width: '100%' }}>
+               <span className="badge badge-cyan" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', margin: 0 }}>
+                 <div style={{width: '6px', height: '6px', borderRadius: '50%', background: 'var(--cyan)', boxShadow: '0 0 8px var(--cyan)'}}></div>
+                 SEASON {seasonId}
+               </span>
+               <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--text-3)', letterSpacing: '0.1em' }}>BASE MAINNET</span>
+            </div>
+            
+            <div style={{ fontSize: '0.9rem', color: 'var(--text-2)', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: '800', marginBottom: '8px' }}>{getGameName()}</div>
+            
+            <div className="text-gradient" style={{ fontSize: '5rem', fontWeight: '900', fontFamily: 'Space Grotesk', lineHeight: '1', margin: '0 0 24px 0', textShadow: '0 0 60px rgba(6, 182, 212, 0.4)' }}>
+              {score}
+            </div>
+            
+            <div style={{ width: '100%', height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)', marginBottom: '24px' }}></div>
+
             {isConnected && (
-              <div style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-2)', background: 'rgba(255,255,255,0.04)', padding: '6px 12px', borderRadius: '8px', display: 'inline-block', border: '1px solid rgba(255,255,255,0.05)' }}>
-                Player: {shortenAddress(address)}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '0.65rem', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Player ID</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--text-1)', fontSize: '0.95rem', fontWeight: '600' }}>
+                    {shortenAddress(address)}
+                  </div>
+                </div>
+                
+                {/* Simulated Web3 Badge */}
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary), var(--violet))', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px var(--violet-glow), inset 0 1px 0 rgba(255,255,255,0.3)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid white', borderTopColor: 'transparent', transform: 'rotate(45deg)' }}></div>
+                </div>
               </div>
             )}
           </div>
