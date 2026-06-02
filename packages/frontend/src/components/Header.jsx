@@ -3,7 +3,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useBalance, useChainId, useSwitchChain } from 'wagmi';
 import { useEffect, useState } from 'react';
 import './Header.css';
-import baseLogo from '../assets/base-logo.svg';
+import baseLogo from '../assets/logo.png';
 
 export default function Header() {
   const location = useLocation();
@@ -50,7 +50,7 @@ export default function Header() {
         <div className="header-container">
           <Link to="/" className="logo">
             <div className="logo-icon">
-              <img src={baseLogo} alt="Base" style={{ width: '22px', height: '22px' }} />
+              <img src={baseLogo} alt="Base" style={{ width: '22px', height: '22px', borderRadius: '4px' }} />
             </div>
             <span className="text-gradient">Base Seasons</span>
             {isConnected && isBaseSepolia && <span className="badge badge-cyan" style={{ marginLeft: '10px', fontSize: '10px' }}>TESTNET</span>}

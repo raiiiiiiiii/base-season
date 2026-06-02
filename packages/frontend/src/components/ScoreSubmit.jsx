@@ -4,7 +4,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { parseSignature } from 'viem';
 import abi from '../abi.json';
 import { useToast } from './ToastContext';
-import baseLogo from '../assets/base-logo.svg';
+import baseLogo from '../assets/logo.png';
 
 const CONTRACT_ADDRESS = "0x6Df4F452e77aF1879061F4F3728D5607B5082ce7";
 
@@ -214,7 +214,7 @@ export default function ScoreSubmit({ gameId, score, onRestart }) {
                 
                 {/* Official Base Logo Badge */}
                 <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 20px rgba(0, 82, 255, 0.4), inset 0 2px 4px rgba(0,0,0,0.1)', border: '1px solid rgba(0, 82, 255, 0.2)' }}>
-                  <img src={baseLogo} alt="Base" style={{ width: '22px', height: '22px' }} />
+                  <img src={baseLogo} alt="Base" style={{ width: '22px', height: '22px', borderRadius: '6px' }} />
                 </div>
               </div>
             )}
