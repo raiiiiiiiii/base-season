@@ -53,8 +53,25 @@ export default function Profile() {
   // Calculate current rank from leaderboard
   let currentRank = "Unranked";
   if (leaderboardData && address) {
-    const sortedScores = [...leaderboardData].sort((a, b) => Number(b.score) - Number(a.score));
+    // Filter for unique players (keep highest score)
+    const playerMap = new Map();
+    leaderboardData.forEach(score => {
+      const playerAddress = score.player.toLowerCase();
+      const currentScore = Number(score.score);
+      
+      if (!playerMap.has(playerAddress)) {
+        playerMap.set(playerAddress, score);
+      } else {
+        const existingScore = Number(playerMap.get(playerAddress).score);
+        if (currentScore > existingScore) {
+          playerMap.set(playerAddress, score);
+        }
+      }
+    });
+    
+    const sortedScores = Array.from(playerMap.values()).sort((a, b) => Number(b.score) - Number(a.score));
     const index = sortedScores.findIndex(s => s.player.toLowerCase() === address.toLowerCase());
+    
     if (index !== -1) {
       currentRank = `#${index + 1}`;
     }

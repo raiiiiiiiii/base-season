@@ -37,8 +37,31 @@ export default function Leaderboard() {
     args: [selectedGame, querySeasonId],
   });
 
-  const sortedScores = activeScores ? [...activeScores].sort((a, b) => Number(b.score) - Number(a.score)) : [];
-  const top10 = sortedScores.slice(0, 10);
+  // Filter for unique players (keep highest score)
+  const uniqueHighestScores = React.useMemo(() => {
+    if (!activeScores) return [];
+    
+    const playerMap = new Map();
+    
+    activeScores.forEach(score => {
+      const address = score.player.toLowerCase();
+      const currentScore = Number(score.score);
+      
+      if (!playerMap.has(address)) {
+        playerMap.set(address, score);
+      } else {
+        const existingScore = Number(playerMap.get(address).score);
+        if (currentScore > existingScore) {
+          playerMap.set(address, score);
+        }
+      }
+    });
+    
+    // Convert map values to array and sort descending
+    return Array.from(playerMap.values()).sort((a, b) => Number(b.score) - Number(a.score));
+  }, [activeScores]);
+
+  const top10 = uniqueHighestScores.slice(0, 10);
 
   const shortenAddress = (addr) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 
