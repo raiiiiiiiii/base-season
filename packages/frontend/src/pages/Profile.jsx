@@ -1,14 +1,16 @@
 import React, { useRef } from 'react';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount, useReadContract, useEnsName } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import html2canvas from 'html2canvas';
 import abi from '../abi.json';
+import AchievementCard from '../components/AchievementCard';
 
 const CONTRACT_ADDRESS = "0x6Df4F452e77aF1879061F4F3728D5607B5082ce7";
 
 export default function Profile() {
   const { address, isConnected } = useAccount();
   const cardRef = useRef(null);
+  const { data: ensName } = useEnsName({ address });
   
   const { data: statsRaw, isLoading } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -67,23 +69,46 @@ export default function Profile() {
           </div>
           
           <div className="glass-panel" style={{ gridColumn: '1 / -1', padding: '40px', textAlign: 'center', marginTop: '20px' }}>
-            <div ref={cardRef} style={{ background: 'var(--bg-dark)', padding: '20px', borderRadius: '16px', display: 'inline-block', marginBottom: '20px' }}>
-              <h2 style={{ fontSize: '1.5rem', marginBottom: '10px' }}><span className="text-gradient">Base Seasons</span></h2>
-              <p>Player: {address.slice(0,6)}...{address.slice(-4)}</p>
-              <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: '10px 0' }}>Score: {Number(stats.bestScore)}</p>
-              <p style={{ color: '#00C2FF' }}>Onchain Legacy</p>
+            <div style={{ marginBottom: '30px' }}>
+              <AchievementCard 
+                ref={cardRef}
+                address={address}
+                ensName={ensName}
+                bestScore={Number(stats.bestScore || 0)}
+                gamesPlayed={Number(stats.gamesPlayed || 0)}
+                currentStreak={Number(stats.currentStreak || 0)}
+                rank={Math.floor(Math.random() * 100) + 1} // Mock rank for display
+                xpEarned={Number(stats.totalScore || 0) * 10} // Mock XP derived from score
+              />
             </div>
             <div>
               <button className="btn-primary" onClick={async () => {
                 if (cardRef.current) {
-                  const canvas = await html2canvas(cardRef.current, { backgroundColor: '#0a0a0a' });
+                  // Capture at exactly 1200x675 for X (Twitter)
+                  const canvas = await html2canvas(cardRef.current, { 
+                    backgroundColor: '#0a0b10',
+                    scale: 1,
+                    width: 1200,
+                    height: 675,
+                    useCORS: true,
+                    onclone: (doc) => {
+                      const el = doc.querySelector('.achievement-card-wrapper');
+                      if (el) {
+                        el.style.width = '1200px';
+                        el.style.maxWidth = '1200px';
+                        el.style.height = '675px';
+                        el.style.margin = '0';
+                        el.style.transform = 'none';
+                      }
+                    }
+                  });
                   const url = canvas.toDataURL('image/png');
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = 'base-seasons-score.png';
+                  a.download = `base-seasons-${address.slice(0,6)}.png`;
                   a.click();
                 }
-              }}>Download Score Card</button>
+              }}>Download 1200x675 For X</button>
             </div>
           </div>
         </div>
